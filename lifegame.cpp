@@ -53,3 +53,4 @@ bool is_alive(rectangle field, size_t row, size_t column) {
         default: return false;
     }
 }
+

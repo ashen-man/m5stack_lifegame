@@ -1,10 +1,11 @@
 #define WIDTH 320
 #define HEIGHT 240
 
-using rectangle = bool(&)[HEIGHT][WIDTH];
+const size_t len = WIDTH * HEIGHT;
+using bitmap = bool(&)[len];
 
-void display(rectangle field);
-void initialize(rectangle field);
-void evolve(rectangle field);
-bool is_alive(rectangle field, size_t row, size_t column);
+void display();
+void initialize();
+void evolve();
+bool is_alive(size_t index);
 

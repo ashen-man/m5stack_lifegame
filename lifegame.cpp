@@ -3,17 +3,18 @@
 #include <M5Stack.h>
 #include "lifegame.h"
 
-bool field[len];
+
+bool field[LEN];
 
 void initialize() {
-    for (size_t i = 0; i < len; i++) {
-        field[len] = rand() % 2;
+    for (size_t i = 0; i < LEN; i++) {
+        field[i] = rand() % 2;
     }
 }
 
 void evolve() {
-    bool tmp[len];
-    for (size_t i = 0; i < len; i++) {
+    bool tmp[LEN];
+    for (size_t i = 0; i < LEN; i++) {
         tmp[i] = is_alive(i);
     }
     memcpy(field, tmp, sizeof(field));
@@ -23,13 +24,13 @@ bool is_alive(size_t index) {
 
     uint8_t count = 0;
 
-    size_t x = index / WIDTH - 1;
-    size_t y = index % WIDTH;
+    size_t x = index % WIDTH;
+    size_t y = index / WIDTH;
 
-    size_t lower = x == HEIGHT-1 ? y : index+WIDTH;
-    size_t upper = x == 0 ? x*(HEIGHT-1)+y : index-WIDTH;
-    size_t right = y == WIDTH-1 ? index-WIDTH+1 : index+1;
-    size_t left = y == 0 ? index+WIDTH-1 : index-1;
+    size_t lower = y == HEIGHT - 1 ? x : index + WIDTH;
+    size_t upper = y == 0 ? WIDTH * (HEIGHT - 1) + x : index - WIDTH;
+    size_t right = x == WIDTH - 1 ? index - WIDTH + 1 : index + 1;
+    size_t left = x == 0 ? index + WIDTH - 1 : index - 1;
 
     size_t neighbors[8] = {
         upper - 1,
@@ -54,12 +55,13 @@ bool is_alive(size_t index) {
 }
 
 void display() {
-    uint8_t data[len];
-    for (size_t i = 0; i < len; i++) {
+    for (size_t i = 0; i < LEN; i++) {
         if (field[i]) {
-            data[i] = 0xF800;
+            M5.Lcd.fillRect(i % WIDTH * BLOCKSIZE, i / WIDTH * BLOCKSIZE, BLOCKSIZE, BLOCKSIZE, TFT_WHITE);
+        }
+        else {
+            M5.Lcd.fillRect(i % WIDTH * BLOCKSIZE, i / WIDTH * BLOCKSIZE, BLOCKSIZE, BLOCKSIZE, TFT_BLACK);
         }
     }
-    M5.Lcd.drawBitmap(0, 0, WIDTH, HEIGHT, data);
 }
 

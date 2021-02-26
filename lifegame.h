@@ -1,8 +1,9 @@
-#define WIDTH 320
-#define HEIGHT 240
+#define BLOCKSIZE 8
 
-const size_t len = WIDTH * HEIGHT;
-using bitmap = bool(&)[len];
+const int WIDTH = 320 / BLOCKSIZE;
+const int HEIGHT = 240 / BLOCKSIZE;
+const size_t LEN = WIDTH * HEIGHT;
+
 
 void display();
 void initialize();
